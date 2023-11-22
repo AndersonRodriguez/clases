@@ -9,13 +9,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Rutas Nombradas',
-      routes: {
-        'first': (context) => const FirstScreen(),
-        'second': (context) => const SecondScreen(),
-      },
-      initialRoute: 'first',
+    return const MaterialApp(
+      title: 'Rutas',
+      home: FirstScreen(),
     );
   }
 }
@@ -32,7 +28,17 @@ class FirstScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            Navigator.pushNamed(context, 'second');
+            // Navigator.of(context).push(
+            //   MaterialPageRoute(
+            //     builder: (context) => const SecondScreen(),
+            //   ),
+            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SecondScreen(),
+              ),
+            );
           },
           child: const Text('Ir a segunda'),
         ),
@@ -54,6 +60,7 @@ class SecondScreen extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
+            // Navigator.of(context).pop();
             Navigator.pop(context);
           },
           child: const Text('Volver'),
