@@ -11,17 +11,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Pasar parametros',
-      routes: {
-        'home': (context) => const HomeScreen(),
-        'edit': (context) => const EditScreen(),
-      },
-      initialRoute: 'home',
+      home: HomeScreen(),
     );
   }
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -47,14 +43,15 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 12),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(
+                Navigator.push(
                   context,
-                  'edit',
-                  arguments: _text,
+                  MaterialPageRoute(
+                    builder: (context) => EditScreen(_text),
+                  ),
                 ).then((value) {
                   if (value != null) {
                     setState(() {
-                      _text = value.toString();
+                      _text = value;
                     });
                   }
                 });
@@ -69,12 +66,12 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class EditScreen extends StatelessWidget {
-  const EditScreen({super.key});
+  String _text;
+
+  EditScreen(this._text, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    String text = ModalRoute.of(context)!.settings.arguments as String;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Screen'),
@@ -84,13 +81,13 @@ class EditScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              text,
+              _text,
               style: const TextStyle(fontSize: 20.0),
             ),
             const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context, text += '?');
+                Navigator.pop(context, _text += '!');
               },
               child: const Text('Volver'),
             ),
