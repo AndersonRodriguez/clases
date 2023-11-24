@@ -61,33 +61,27 @@ class DetailsScreen extends StatelessWidget {
         title: const Text('Detalles'),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              width: 100.0,
-              height: 100.0,
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage('assets/loro.png'),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Center(
+            child: Column(
+              children: [
+                Image.asset('assets/loro.png'),
+                const SizedBox(
+                  height: 20.0,
                 ),
-              ),
-              child: const Align(
-                child: Text(
-                  'Loro',
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 20.0,
-                  ),
+                Text(_person.name),
+                const SizedBox(
+                  height: 20.0,
                 ),
-              ),
+                Text(_person.description),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Text('Edad: ${_person.age}'),
+              ],
             ),
-            Text(_person.name),
-            Text(_person.description),
-            Text('Edad: ${_person.age}'),
-          ],
+          ),
         ),
       ),
     );
