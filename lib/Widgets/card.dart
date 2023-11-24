@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(Screen());
+  runApp(const Screen());
 }
 
 class Person {
@@ -12,23 +12,82 @@ class Person {
 }
 
 class Screen extends StatelessWidget {
-  Screen({super.key});
-
-  List<Person> people = [
-    Person('Anderson', 'Ingeniero', 28),
-    Person('Pancho', 'Desarrollador', 32),
-    Person('Pedro', 'QA', 43),
-  ];
+  const Screen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Card',
-      home: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: people.map((person) => CustomCard(person)).toList(),
-          ),
+      home: ListScreen(),
+    );
+  }
+}
+
+class ListScreen extends StatelessWidget {
+  ListScreen({super.key});
+
+  List<Person> people = [
+    Person('Anderson', 'Ingeniero', 28),
+    Person('Pancho', 'Desarrollador', 32),
+    Person('Juan', 'QA', 21),
+    Person('Luis', 'Desarrollador', 50),
+    Person('Sergio', 'Desarrollador', 15),
+    Person('Carlos', 'Desarrollador', 46),
+    Person('Christian', 'Desarrollador', 70),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: ListView.builder(
+          itemCount: people.length,
+          itemBuilder: (context, index) => CustomCard(people[index]),
+        ),
+      ),
+    );
+  }
+}
+
+class DetailsScreen extends StatelessWidget {
+  final Person _person;
+
+  const DetailsScreen(this._person, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Detalles'),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              width: 100.0,
+              height: 100.0,
+              decoration: const BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/loro.png'),
+                ),
+              ),
+              child: const Align(
+                child: Text(
+                  'Loro',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+            ),
+            Text(_person.name),
+            Text(_person.description),
+            Text('Edad: ${_person.age}'),
+          ],
         ),
       ),
     );
@@ -95,16 +154,26 @@ class CustomCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            const Column(
+            Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
+                const Icon(
                   Icons.delete,
                   color: Colors.red,
                 ),
-                Icon(
-                  Icons.edit,
-                  color: Colors.green,
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailsScreen(person),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.green,
+                  ),
                 )
               ],
             ),

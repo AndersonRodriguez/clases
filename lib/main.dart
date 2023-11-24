@@ -1,97 +1,184 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Screen());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Person {
+  String name, description;
+  int age;
+
+  Person(this.name, this.description, this.age);
+}
+
+class Screen extends StatelessWidget {
+  const Screen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ListView',
-      home: Screen(),
+      title: 'Card',
+      home: ListScreen(),
     );
   }
 }
 
-class Screen extends StatelessWidget {
-  final List<int> colorCode = [600, 500, 100];
-  final List<String> names = ['Anderson', 'Pancho', 'Pedro'];
+class ListScreen extends StatelessWidget {
+  ListScreen({super.key});
 
-  Screen({super.key});
+  List<Person> people = [
+    Person('Anderson', 'Ingeniero', 28),
+    Person('Pancho', 'Desarrollador', 32),
+    Person('Juan', 'QA', 21),
+    Person('Luis', 'Desarrollador', 50),
+    Person('Sergio', 'Desarrollador', 15),
+    Person('Carlos', 'Desarrollador', 46),
+    Person('Christian', 'Desarrollador', 70),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView.separated(
-          itemBuilder: (context, index) => Text('Nombre: ${names[index]}'),
-          separatorBuilder: (context, index) => const Divider(
-            color: Colors.red,
-            height: 12.0,
-            thickness: 3.0,
-          ),
-          itemCount: names.length,
+        child: ListView.builder(
+          itemCount: people.length,
+          itemBuilder: (context, index) => CustomCard(people[index]),
         ),
+      ),
+    );
+  }
+}
 
-        // child: ListView.builder(
-        //   scrollDirection: Axis.horizontal,
-        //   itemCount: colorCode.length,
-        //   itemBuilder: (context, index) {
-        //     return Container(
-        //       height: 50.0,
-        //       width: 500.0,
-        //       color: Colors.amber[colorCode[index]],
-        //     );
-        //   },
-        // ),
+class DetailsScreen extends StatelessWidget {
+  final Person _person;
 
-        // child: ListView(
-        //   children: [
-        //     const ListTile(
-        //       leading: Icon(Icons.phone),
-        //       title: Text('Main Title'),
-        //       subtitle: Text('SubTitle'),
-        //       trailing: Icon(Icons.shopping_cart),
-        //     ),
-        //     Container(
-        //       height: 300,
-        //       width: 200,
-        //       color: Colors.red,
-        //     ),
-        //     const ListTile(
-        //       leading: Icon(Icons.phone),
-        //       title: Text('Main Title'),
-        //       subtitle: Text('SubTitle'),
-        //       trailing: Icon(Icons.shopping_cart),
-        //     ),
-        //     const ListTile(
-        //       leading: Icon(Icons.phone),
-        //       title: Text('Main Title'),
-        //       subtitle: Text('SubTitle'),
-        //       trailing: Icon(Icons.shopping_cart),
-        //     ),
-        //     Container(
-        //       height: 300,
-        //       width: 200,
-        //       color: Colors.red,
-        //     ),
-        //     const ListTile(
-        //       leading: Icon(Icons.phone),
-        //       title: Text('Main Title'),
-        //       subtitle: Text('SubTitle'),
-        //       trailing: Icon(Icons.shopping_cart),
-        //     ),
-        //     const ListTile(
-        //       leading: Icon(Icons.phone),
-        //       title: Text('Main Title'),
-        //       subtitle: Text('SubTitle'),
-        //       trailing: Icon(Icons.shopping_cart),
-        //     ),
-        //   ],
-        // ),
+  const DetailsScreen(this._person, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Detalles'),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
+              width: 100.0,
+              height: 100.0,
+              decoration: const BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage('assets/loro.png'),
+                ),
+              ),
+              child: const Align(
+                child: Text(
+                  'Loro',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20.0,
+                  ),
+                ),
+              ),
+            ),
+            Text(_person.name),
+            Text(_person.description),
+            Text('Edad: ${_person.age}'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CustomCard extends StatelessWidget {
+  Person person;
+
+  CustomCard(this.person, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.all(12.0),
+      color: Colors.amber,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      shadowColor: Colors.blue,
+      elevation: 10,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 100.0,
+                  height: 100.0,
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/loro.png'),
+                    ),
+                  ),
+                  child: const Align(
+                    child: Text(
+                      'Loro',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Text(person.name)
+              ],
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(person.description),
+                  Text('Edad ${person.age}'),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailsScreen(person),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.green,
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
