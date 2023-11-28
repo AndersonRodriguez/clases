@@ -79,6 +79,15 @@ class DetailsScreen extends StatelessWidget {
                   height: 20.0,
                 ),
                 Text('Edad: ${_person.age}'),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Volver'),
+                ),
               ],
             ),
           ),
